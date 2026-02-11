@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CoffeeCord · 咖啡冲煮记录</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app">
+      <header>
+        <h1>☕ CoffeeCord</h1>
+        <p>记录每一杯咖啡，快速找到你最喜欢的配方。</p>
+      </header>
+
+      <section class="card">
+        <div class="form-header">
+          <h2 id="form-title">新增冲煮记录</h2>
+          <p id="form-mode" class="form-mode" aria-live="polite"></p>
+        </div>
+
+        <form id="brew-form">
+          <div class="grid">
+            <label>
+              咖啡豆
+              <input id="bean" required maxlength="30" placeholder="例如：耶加雪菲" />
+            </label>
+            <label>
+              冲煮方式
+              <select id="method" required>
+                <option value="手冲">手冲</option>
+                <option value="法压">法压</option>
+                <option value="爱乐压">爱乐压</option>
+                <option value="意式">意式</option>
+                <option value="冷萃">冷萃</option>
+              </select>
+            </label>
+            <label>
+              粉水比
+              <input id="ratio" required placeholder="例如：1:15" pattern="^\d+:\d+$" />
+            </label>
+            <label>
+              评分（1-10）
+              <input id="score" type="number" min="1" max="10" required />
+            </label>
+            <label class="full">
+              备注
+              <textarea id="notes" rows="3" maxlength="120" placeholder="风味、研磨度、温度等"></textarea>
+            </label>
+          </div>
+          <div class="actions">
+            <button type="submit" id="submit-button">保存记录</button>
+            <button type="button" id="cancel-edit" class="ghost" hidden>取消编辑</button>
+            <button type="button" id="clear-all" class="ghost">清空全部</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="card">
+        <div class="list-header">
+          <h2>历史记录</h2>
+          <p id="stats">暂无数据</p>
+        </div>
+
+        <div class="filters" aria-label="筛选与排序">
+          <label>
+            方式筛选
+            <select id="filter-method">
+              <option value="all">全部方式</option>
+              <option value="手冲">手冲</option>
+              <option value="法压">法压</option>
+              <option value="爱乐压">爱乐压</option>
+              <option value="意式">意式</option>
+              <option value="冷萃">冷萃</option>
+            </select>
+          </label>
+
+          <label>
+            最低评分
+            <select id="filter-min-score">
+              <option value="0">不限</option>
+              <option value="7">7 分及以上</option>
+              <option value="8">8 分及以上</option>
+              <option value="9">9 分及以上</option>
+            </select>
+          </label>
+
+          <label>
+            关键词
+            <input id="search-keyword" placeholder="搜豆子/备注" maxlength="30" />
+          </label>
+
+          <label>
+            排序
+            <select id="sort-by">
+              <option value="createdAt-desc">时间：最新优先</option>
+              <option value="createdAt-asc">时间：最早优先</option>
+              <option value="score-desc">评分：高分优先</option>
+              <option value="score-asc">评分：低分优先</option>
+            </select>
+          </label>
+
+          <button id="reset-filters" type="button" class="ghost">重置筛选</button>
+        </div>
+
+        <div class="data-tools" aria-label="数据管理">
+          <button id="export-data" type="button" class="ghost">导出 JSON</button>
+          <label class="import-mode-label" for="import-mode">导入模式</label>
+          <select id="import-mode">
+            <option value="merge">合并（去重）</option>
+            <option value="replace">覆盖现有</option>
+          </select>
+          <label class="import-file-label" for="import-file">导入文件</label>
+          <input id="import-file" type="file" accept="application/json" />
+        </div>
+        <p id="import-message" class="import-message" aria-live="polite"></p>
+
+        <ul id="brew-list" class="brew-list"></ul>
+      </section>
+    </main>
+
+    <template id="brew-item-template">
+      <li class="brew-item">
+        <div class="brew-main">
+          <strong class="bean"></strong>
+          <span class="method"></span>
+          <span class="ratio"></span>
+          <span class="score"></span>
+        </div>
+        <p class="notes"></p>
+        <time class="time"></time>
+        <div class="item-actions">
+          <button class="edit ghost">编辑</button>
+          <button class="delete">删除</button>
+        </div>
+      </li>
+    </template>
+
+    <script src="app.js"></script>
+  </body>
+</html>
